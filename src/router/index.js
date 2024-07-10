@@ -1,7 +1,5 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '@/views/Home.vue'; // 确保引入正确的路径
-import Login from '@/views/login.vue'; // 确保引入正确的路径
+import Vue from "vue";
+import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
@@ -9,17 +7,18 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: Home
+        component: () => import('@/views/Home.vue')
     },
-    {
-        path: '/login',
-        name: 'Login', // 修正为 'Login'
-        component: Login
-    },
+    // {
+    //     path: '/about',
+    //     name: 'About',
+    //     component: () => import('@/views/About.vue')
+    // }
+    // 你可以在这里添加更多路由
 ];
 
 const router = new VueRouter({
-    mode: 'history',
+    mode: 'history', // 使用HTML5历史记录模式
     base: process.env.BASE_URL,
     routes
 });

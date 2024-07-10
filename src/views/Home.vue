@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
     <div class="header">
-      <img class="avatar" src="../assets/logo.png" alt="Avatar">
+      <img class="avatar" src="../assets/logo.png" alt="Avatar" @click="fetchQRCode">
     </div>
     <div class="messages">
       <div
@@ -36,11 +36,24 @@
         </button>
       </div>
     </div>
+    <div v-if="qrCodeUrl" class="qr-code-modal" @click="closeQRCodeModal">
+      <div class="qr-code-container" @click.stop>
+        <div class="qr-code-header">
+          <span>登录即可免费领取试用会员</span>
+          <button class="close-button" @click="closeQRCodeModal">×</button>
+        </div>
+        <img :src="qrCodeUrl" alt="QR Code">
+        <div class="qr-code-footer">
+          <span>使用微信扫码 关注公众号登录</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { BASE_URL } from '../config'; // 引入全局变量
 
 export default {
   name: 'ChatBox',
@@ -49,7 +62,9 @@ export default {
       newMessage: '',
       messages: [
         { sender: 'User1', content: '你好！' }
-      ]
+      ],
+      qrCodeUrl: '',
+      loginPollingInterval: null,
     };
   },
   methods: {
@@ -67,7 +82,7 @@ export default {
         console.log('Sending message:', messageContent);
 
         try {
-          const response = await axios.post('http://localhost:80/system/chat/question', messageContent, {
+          const response = await axios.post(`${BASE_URL}/system/chat/question`, messageContent, {
             headers: {
               'Content-Type': 'text/plain'
             }
@@ -99,6 +114,44 @@ export default {
     scrollToBottom() {
       const messagesContainer = this.$el.querySelector('.messages');
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    },
+    async fetchQRCode() {
+      try {
+        const response = await axios.post(`${BASE_URL}/system/wx/getQRCode`);
+        if (response.data && response.data.message) {
+          this.qrCodeUrl = response.data.message;
+          console.log('QR Code URL:', this.qrCodeUrl);
+          // 显示二维码后调用 login 接口
+          this.startLoginPolling();
+        } else {
+          console.error('Failed to fetch QR code');
+        }
+      } catch (error) {
+        console.error('Error fetching QR code:', error);
+      }
+    },
+    async startLoginPolling() {
+      this.loginPollingInterval = setInterval(async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/system/wx/login`);
+          if (response.data && response.data.success) {
+            console.log('User openid:', response.data.message);
+            alert('登录成功');
+            this.qrCodeUrl = ''; // 关闭二维码模态框
+            clearInterval(this.loginPollingInterval); // 停止轮询
+          } else {
+            console.error('Failed to login');
+          }
+        } catch (error) {
+          console.error('Error logging in:', error);
+        }
+      }, 2000); // 每2秒轮询一次
+    },
+    closeQRCodeModal() {
+      this.qrCodeUrl = '';
+      if (this.loginPollingInterval) {
+        clearInterval(this.loginPollingInterval);
+      }
     }
   },
   mounted() {
@@ -134,6 +187,7 @@ html, body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  cursor: pointer; /* 增加手型光标以表明可以点击 */
 }
 
 .messages {
@@ -238,5 +292,45 @@ html, body {
 
 .send-button:hover {
   background-color: #0056b3;
+}
+
+.qr-code-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr-code-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.qr-code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.qr-code-footer {
+  margin-top: 20px;
+  color: #777;
 }
 </style>
