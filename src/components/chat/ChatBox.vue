@@ -1,6 +1,19 @@
 <template>
   <div class="chat-container">
     <div class="header">
+      <!-- 模型选择按钮 -->
+      <div class="model-selector">
+        <button class="model-button" @click="toggleModelMenu">
+          {{ selectedModel || '选择模型' }}
+          <span class="arrow-down" :class="{'open': showModelMenu}">&#9660;</span>
+        </button>
+        <!-- 模型选择菜单 -->
+        <div v-if="showModelMenu" class="model-menu">
+          <div v-for="model in models" :key="model" class="model-option" @click="selectModel(model)">
+            {{ model }}
+          </div>
+        </div>
+      </div>
       <img class="avatar" src="@/assets/logo.png" alt="Avatar" @click="fetchQRCode">
     </div>
     <div class="messages">
@@ -38,15 +51,22 @@ export default {
       ],
       qrCodeUrl: '',
       loginPollingInterval: null,
+      showModelMenu: false, // 控制模型选择菜单的显示
+      selectedModel: '', // 记录当前选择的模型
+      models: ['模型一', '模型二', '模型三'] // 模型列表
     };
   },
   methods: {
     async sendMessage(messageContent) {
       if (messageContent.trim() !== '') {
+        const messageContent = this.newMessage;
         this.messages.push({
           sender: 'User2',
           content: messageContent
         });
+
+        this.newMessage = '';
+        this.$refs.textarea.style.height = 'auto';
 
         console.log('Sending message:', messageContent);
 
@@ -116,6 +136,15 @@ export default {
       if (this.loginPollingInterval) {
         clearInterval(this.loginPollingInterval);
       }
+    },
+    toggleModelMenu() {
+      this.showModelMenu = !this.showModelMenu;
+      console.log('Show model menu:', this.showModelMenu); // 确保这个值在点击时改变
+    },
+    selectModel(model) {
+      this.selectedModel = model;
+      this.showModelMenu = false;
+      console.log('Selected model:', model);
     }
   },
   mounted() {
@@ -139,6 +168,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   padding: 20px 20px 0 0;
+  position: relative; /* 使子元素的绝对定位有效 */
 }
 
 .avatar {
@@ -188,5 +218,64 @@ export default {
 .message-content {
   font-size: 16px;
   line-height: 1.4;
+}
+
+.model-selector {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%); /* Center the model selector */
+}
+
+.model-button {
+  padding: 10px 100px; /* 调整按钮的边距 */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+}
+
+.arrow-down {
+  margin-left: 8px;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.arrow-down.open {
+  transform: rotate(180deg);
+}
+
+.model-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 285px; /* 设置最小宽度 */
+}
+
+.model-option {
+  padding: 10px 15px;
+  cursor: pointer;
+  text-align: center;
+  width: 100%; /* 设置宽度为 100% 以填满父容器 */
+  box-sizing: border-box; /* 包括内边距和边框在宽度内 */
+  font-size: 16px; /* 可以根据需要调整字体大小 */
+  border-bottom: 1px solid #ddd; /* 添加底部边框 */
+}
+
+.model-option:last-child {
+  border-bottom: none; /* 去掉最后一个选项的底部边框 */
+}
+
+.model-option:hover {
+  background-color: #f1f1f1; /* 悬停时改变背景色 */
 }
 </style>
