@@ -6,8 +6,8 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
-        name: 'Home',
-        component: () => import('@/views/Home.vue')
+        name: 'chat',
+        component: () => import('@/components/chat/ChatBox.vue')
     },
     // {
     //     path: '/about',
