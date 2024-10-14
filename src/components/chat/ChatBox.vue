@@ -5,12 +5,16 @@
     </div>
     <div class="messages">
       <div
-        class="message"
+        class="message-wrapper"
         v-for="(message, index) in messages"
         :key="index"
-        :class="{'message-sent': message.sender === 'User2', 'message-received': message.sender === 'User1'}"
+        :class="{'message-sent-wrapper': message.sender === 'User2', 'message-received-wrapper': message.sender === 'User1'}"
       >
-        <div class="message-content">{{ message.content }}</div>
+        <img v-if="message.sender === 'User1'" :src="message.avatar" alt="Avatar" class="message-avatar-left" />
+        <div class="message" :class="{'message-sent': message.sender === 'User2', 'message-received': message.sender === 'User1'}">
+          <div class="message-content">{{ message.content }}</div>
+        </div>
+        <img v-if="message.sender === 'User2'" :src="message.avatar" alt="Avatar" class="message-avatar-right" />
       </div>
     </div>
     <MessageInput @send-message="sendMessage" v-model="newMessage" />
@@ -18,9 +22,11 @@
   </div>
 </template>
 
+
+
 <script>
 import axios from 'axios';
-import { BASE_URL } from '@/config.js'; // 引入全局变量
+import { BASE_URL } from '@/config.js';
 import MessageInput from './MessageInput.vue';
 import QRCodeModal from './QRCodeModal.vue';
 
@@ -34,7 +40,7 @@ export default {
     return {
       newMessage: '',
       messages: [
-        { sender: 'User1', content: '你好！' }
+        { sender: 'User1', content: '你好！', avatar: require('@/assets/user1-avatar.png') }
       ],
       qrCodeUrl: '',
       loginPollingInterval: null,
@@ -45,10 +51,9 @@ export default {
       if (messageContent.trim() !== '') {
         this.messages.push({
           sender: 'User2',
-          content: messageContent
+          content: messageContent,
+          avatar: require('@/assets/user2-avatar.png')
         });
-
-        console.log('Sending message:', messageContent);
 
         try {
           const response = await axios.post(`${BASE_URL}/system/chat/question`, messageContent, {
@@ -56,13 +61,12 @@ export default {
               'Content-Type': 'text/plain'
             }
           });
-          console.log('Response:', response.data);
           if (response.data && response.data.message) {
             this.messages.push({
               sender: 'User1',
-              content: response.data.message
+              content: response.data.message,
+              avatar: require('@/assets/user1-avatar.png')
             });
-            console.log('Message added:', response.data.message);
           } else {
             console.error('Response data format is incorrect');
           }
@@ -84,8 +88,6 @@ export default {
         const response = await axios.post(`${BASE_URL}/system/wx/getQRCode`);
         if (response.data && response.data.message) {
           this.qrCodeUrl = response.data.message;
-          console.log('QR Code URL:', this.qrCodeUrl);
-          // 显示二维码后调用 login 接口
           this.startLoginPolling();
         } else {
           console.error('Failed to fetch QR code');
@@ -99,17 +101,16 @@ export default {
         try {
           const response = await axios.get(`${BASE_URL}/system/wx/login`);
           if (response.data && response.data.success) {
-            console.log('User openid:', response.data.message);
             alert('登录成功');
-            this.qrCodeUrl = ''; // 关闭二维码模态框
-            clearInterval(this.loginPollingInterval); // 停止轮询
+            this.qrCodeUrl = '';
+            clearInterval(this.loginPollingInterval);
           } else {
             console.error('Failed to login');
           }
         } catch (error) {
           console.error('Error logging in:', error);
         }
-      }, 2000); // 每2秒轮询一次
+      }, 2000);
     },
     closeQRCodeModal() {
       this.qrCodeUrl = '';
@@ -123,6 +124,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .chat-container {
@@ -158,35 +160,60 @@ export default {
   padding-bottom: 70px;
 }
 
+.message-wrapper {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.message-sent-wrapper {
+  justify-content: flex-end;
+}
+
+.message-received-wrapper {
+  justify-content: flex-start;
+}
+
 .message {
   margin-bottom: 10px;
   padding: 10px 15px;
   border-radius: 20px;
   word-wrap: break-word;
-  display: flex;
-  align-items: center;
+  display: inline-block;
   max-width: fit-content;
 }
 
 .message-sent {
-  align-self: flex-end;
   background-color: #007bff;
   color: white;
   border: 1px solid #007bff;
   text-align: right;
-  margin-left: auto;
 }
 
 .message-received {
-  align-self: flex-start;
   background-color: #f1f1f1;
   border: 1px solid #ddd;
   text-align: left;
-  margin-right: auto;
 }
 
 .message-content {
   font-size: 16px;
   line-height: 1.4;
+}
+
+.message-avatar-left {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  align-self: flex-start;
+}
+
+.message-avatar-right {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 10px;
+  align-self: flex-start;
 }
 </style>
