@@ -9,16 +9,15 @@ const routes = [
         name: 'chat',
         component: () => import('@/components/chat/ChatBox.vue')
     },
-    // {
-    //     path: '/about',
-    //     name: 'About',
-    //     component: () => import('@/views/About.vue')
-    // }
-    // 你可以在这里添加更多路由
+    {
+        path: '/vip-purchase',
+        name: 'VIPPurchase',
+        component: () => import('@/components/vip/VIPPurchasePage.vue') // 确保路径和文件名一致
+    }
 ];
 
 const router = new VueRouter({
-    mode: 'history', // 使用HTML5历史记录模式
+    mode: 'history',
     base: process.env.BASE_URL,
     routes
 });

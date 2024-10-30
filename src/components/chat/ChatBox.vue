@@ -2,6 +2,7 @@
   <div class="chat-container">
     <div class="header">
       <img class="avatar" src="@/assets/logo.png" alt="Avatar" @click="fetchQRCode">
+      <button class="vip-button" @click="goToVIPPurchase">前往VIP购买界面</button>
     </div>
     <div class="messages">
       <div
@@ -21,8 +22,6 @@
     <QRCodeModal v-if="qrCodeUrl" :qr-code-url="qrCodeUrl" @close="closeQRCodeModal" />
   </div>
 </template>
-
-
 
 <script>
 import axios from 'axios';
@@ -117,6 +116,9 @@ export default {
       if (this.loginPollingInterval) {
         clearInterval(this.loginPollingInterval);
       }
+    },
+    goToVIPPurchase() {
+      this.$router.push({ name: 'VIPPurchase' });
     }
   },
   mounted() {
@@ -124,7 +126,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .chat-container {
@@ -141,12 +142,24 @@ export default {
   display: flex;
   justify-content: flex-end;
   padding: 20px 20px 0 0;
+  align-items: center;
 }
 
 .avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.vip-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
 }
 
