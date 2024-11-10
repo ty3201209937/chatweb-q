@@ -2,6 +2,7 @@
     <div class="subscription-box">
       <h3 class="title">{{ title }}</h3>
       <p class="price">{{ price }}</p>
+      <p class="sum">{{ sum }}</p>
       <p class="benefits-title">VIP用户专属权益</p>
       <ul class="benefits-list">
         <li v-for="(benefit, index) in parsedBenefits" :key="index">{{ benefit }}</li>
@@ -16,6 +17,7 @@
     props: {
       title: String,
       price: String,
+      sum: String,
       benefits: String,
     },
     computed: {
@@ -56,10 +58,14 @@
   .price {
     font-size: 18px;
     color: #007bff;
-    margin-bottom: 20px;
+    margin-bottom: -10px;
     font-weight: bold;
   }
-  
+  .sum{
+    font-size: 15px;
+    color: #8f8f8f;
+    text-align: left;
+  }
   .benefits-title {
     font-size: 15px;
     font-weight: bold;
