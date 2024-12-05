@@ -1,8 +1,12 @@
 <template>
   <div class="chat-container">
     <div class="header">
-      <img class="avatar" src="@/assets/logo.png" alt="Avatar" @click="fetchQRCode">
+      <img class="avatar" src="@/assets/logo.png" alt="Avatar" @click="fetchQRCode" />
       <button class="vip-button" @click="goToVIPPurchase">前往VIP购买界面</button>
+      
+      <ContinueApplicationButton class="paper" @click="goToPaperGenerator">
+        论文生成入口
+      </ContinueApplicationButton>
     </div>
     <div class="messages">
       <div
@@ -23,7 +27,9 @@
   </div>
 </template>
 
+
 <script>
+import ContinueApplicationButton from '@/components/Button/ContinueApplicationButton.vue';
 import axios from 'axios';
 import { BASE_URL } from '@/config.js';
 import MessageInput from './MessageInput.vue';
@@ -32,6 +38,7 @@ import QRCodeModal from './QRCodeModal.vue';
 export default {
   name: 'ChatBox',
   components: {
+    ContinueApplicationButton,
     MessageInput,
     QRCodeModal
   },
@@ -119,7 +126,7 @@ export default {
     },
     goToVIPPurchase() {
       this.$router.push({ name: 'VIPPurchase' });
-    }
+    },
   },
   mounted() {
     this.scrollToBottom();
@@ -229,4 +236,11 @@ export default {
   margin-left: 10px;
   align-self: flex-start;
 }
+.paper{
+  position:absolute ;
+  top: 400px;
+  left: 20px;
+
+}
+
 </style>
