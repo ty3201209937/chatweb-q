@@ -15,9 +15,9 @@ const routes = [
         component: () => import('@/components/vip/VIPPurchasePage.vue') // 确保路径和文件名一致
     },
     {
-        path: '/homee',
+        path: '/home',
         name: 'home_page',
-        component: () => import('@/components/home_page.vue')
+        component: () => import('@/components/home_page2.vue')
     },
     {
         path: '/PaperGenerator',
