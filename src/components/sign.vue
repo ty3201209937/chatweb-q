@@ -5,15 +5,13 @@
       <div class="form-wrapper">
         <input type="text" v-model="username" placeholder="账号" class="input-item">
         <input type="password" v-model="password" placeholder="密码" class="input-item">
-        <input type="text" v-model="verificationCode" placeholder="验证码" class="input-item">
-        <div class="form-group">
-          <button type="button" @click="sendCode">发送验证码</button>
+        <div class="button-group">
+          <button class="sign-button login-button" @click="login">登录</button>
+          <button class="sign-button register-button" @click="register">注册</button>
         </div>
-        <button class="sign-button" @click="goTomainseen">登录</button>
       </div>
       <div class="rmm">
-        <a href="b" @click="register">注册</a>
-        <a href="c" @click="forget">忘记密码</a>
+        <a href="#" @click="forget">忘记密码</a>
       </div>
       <div class="checkbox-container">
         <input type="checkbox" id="mycheckbox" />
@@ -29,99 +27,134 @@ export default {
   data() {
     return {
       username: '',
-      password: '',
-      verificationCode: ''
+      password: ''
     };
   },
   methods: {
-    sendCode() {
-      // 发送验证码的逻辑
-      console.log('发送验证码');
-    },
     login() {
       // 登录的逻辑
-      console.log('登录', this.username, this.password, this.verificationCode);
-    }
-    ,
+      console.log('登录', this.username, this.password);
+    },
     register() {
       // 注册的逻辑
-      this.$router.push({ name: 'DLRegistrition' });
+      this.$router.push({ name: 'registrition' });
     },
     forget() {
       // 忘记密码的逻辑
       this.$router.push({ name: 'ForgetPassword' });
-    },
-    goTomainseen() {
-      // 跳转到主页的逻辑
-      this.$router.push({ name: 'Mainseen' });
     }
   }
 };
 </script>
 
 <style scoped>
-
-html {
+html, body {
   height: 100%;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
 }
-body {
-  height: 100%;
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  padding: 20px;
 }
 
 .login-wrapper {
-  background-color: bisque;
-  width: 385px;
-  height: 600px;
-  border-radius: 30px;
-  padding: 0 50px;
-  position: relative;
-  left: 50%;
-  top: 492px;
-  transform: translate(-50%,-50%);
+  background-color: rgba(0, 0, 0, .1);
+  width: 465px;
+  height: 620px; /* 增加高度 */
+  border-radius: 10px;
+  padding: 40px; /* 增加内边距 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+ 
 }
+
 .header {
-  font-size: 35px;
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
-  line-height: 184px;
+  color: #333;
+  margin-bottom: 20px; /* 减少间距 */
+  transform: translateY(-100px); /* 上移标题 */
 }
+
 .input-item {
-  display: block;
-  width: 372px;
+  width: 93%;
   margin-bottom: 20px;
-  border: 0;
-  padding: 10px;
-  border-bottom: 1px solid rgb(168, 81, 81);
-  font-size: 15px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
   outline: none;
+  transition: border-color 0.3s ease;
+  margin-left: 4px;
 }
-.form-group {
-  margin-bottom: 20px;
+
+.input-item:focus {
+  border-color: #4254b9;
 }
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  width: 78%;
+  margin-top: 20px;
+  margin-left: 55px;
+}
+
 .sign-button {
-  display: inline-block;
-  padding: 10px 75px;
-  background-color: #4254b9;
+  width: calc(50% - 5px);
+  padding: 15px;
+  background-color: rgba(0, 0, 0, .15);
   color: white;
-  text-decoration: none;
+  border: none;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  margin-left: 108px;
-}
-a {
-  text-decoration-line: none;
-  color: #abc1ee;
-  margin-left: 102px;
-
+  transition: background-color 0.3s ease;
 }
 
+.sign-button:hover {
+  background-color: #3548a1;
+}
 
-/* 新增样式 */
+.register-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.register-button:hover {
+  background-color: #e0e0e0;
+}
+
+.rmm {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.rmm a {
+  color:  rgb(0 0 0 / 47%);
+  text-decoration: none;
+  margin-left: 10px;
+}
+
 .checkbox-container {
   display: flex;
-  justify-content: center; /* 水平居中 */
-  margin-top: 20px; /* 与上方元素的间距 */
+  justify-content: center;
+  margin-top: 22px;
 }
 
+.checkbox-container input[type="checkbox"] {
+  margin-right: 10px;
+}
 </style>
