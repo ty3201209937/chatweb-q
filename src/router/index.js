@@ -19,14 +19,14 @@ const routes = [
         component: () => import('@/components/home_page2.vue')
     },
     {
-        path: '/PaperGenerator',
+        path: '/Registerpage',
         name: 'PaperGenerator',
         component: () => import('@/components/RegisterPage.vue')
     },
     {
-        path: '/registrition',
-        name: 'registrition',
-        component: () => import('@/components/registrition.vue')
+        path: '/order',
+        name: 'ordermanagement',
+        component: () => import('@/components/OrderManagement.vue')
     },
     {
         path: '/sign',
@@ -39,31 +39,43 @@ const routes = [
         component: () => import('@/components/PersonalHomepage.vue')
     },
     {
-        path: '/Person',
-        name: 'Person',
-        component: () => import('@/components/PersonalHomepage.vue')
-    },
-    {
         path: '/mainpage8.1.1',
         name: 'mainpage',
         component: () => import('@/components/mainpage8.1.1.vue')
     },
     {
-        path: '/no-page', 
+        path: '/no-page',
         name: 'NoPage',
-        component: () => import('@/components/no_page.vue')  
-      }
-
-    
-   
+        component: () => import('@/components/no_page (1).vue')
+    },
+    {
+        path: '/mainpage',
+        name: 'mainpage',
+        component: () => import('@/components/mainpage.vue')
+    },
+    {
+        path:'/register',
+        name:'register',
+        component: () => import('@/components/registrition.vue')
+    },
+    {
+        path:'/history_paper',
+        name:'history_paper',
+        component: () => import('@/components/history_page.vue')
+    },
+    {
+        path:'/online',
+        name:'online',
+        component: () => import('@/components/online.vue')
+    }
   
    
 ];
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-});
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
+  });
 
 export default router;

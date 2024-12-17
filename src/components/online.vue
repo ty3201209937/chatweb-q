@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import yonghu from '@/assets/yonghu.png';
+import yonghu from '@/assets/yonghu.jpg';
 import kefu from '@/assets/kefu.png';
 
 export default {

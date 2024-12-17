@@ -116,7 +116,7 @@ html, body {
   background-color: rgba(0, 0, 0, .15);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 5px; 
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
