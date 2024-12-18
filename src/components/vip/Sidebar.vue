@@ -2,13 +2,12 @@
     <div class="sidebar" @mouseover="showSidebar" @mouseleave="hideSidebar" :class="{ 'visible': isVisible }">
       <div class="nav-item">登录按钮</div>
       <div class="nav-item">开启新会话按钮</div>
-      <div class="nav-item highlight">论文生成</div>
-      <div class="nav-item highlight">学术专区</div>
       <div class="nav-item">历史会话</div>
       <div class="nav-item avatar">用户个人中心</div>
       <div class="nav-item">VIP权限支付入口</div>
       <div class="nav-item">在线客服</div>
-
+      <div class="nav-item highlight">论文生成</div>
+      <div class="nav-item highlight">学术专区</div>
     </div>
   </template>
   
@@ -17,14 +16,16 @@
     name: 'Sidebar',
     data() {
       return {
-        isVisible: true // 控制侧边栏显示状态
+        isVisible: false // 控制侧边栏显示状态
       };
     },
     methods: {
       showSidebar() {
         this.isVisible = true; // 显示侧边栏
       },
-
+      hideSidebar() {
+        this.isVisible = false; // 隐藏侧边栏
+      }
     }
   };
   </script>

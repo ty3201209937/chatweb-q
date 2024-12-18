@@ -6,7 +6,7 @@
     <!-- 主内容区域 -->
     <div class="main-content">
       <!-- 返回按钮 -->
-
+      <button class="back-button" @click="goBack">返回</button>
 
       <!-- 头部 -->
       <header class="header">
@@ -19,9 +19,7 @@
         </div>
 
         <!-- 居中的公司LOGO -->
-        <div class="logo">
-          <img :src="logoUrl" alt="公司LOGO" class="logo-img" />
-        </div>
+        <div class="logo">公司LOGO</div>
       </header>
 
       <!-- 权益说明 -->
@@ -33,20 +31,17 @@
       <div class="subscription-options">
         <SubscriptionBox
           title="1个月"
-          price="￥48/月"
+          price="正常价格/月"
           benefits="免费体验学术专区服务5次、享有10次免费论文下载、购买服务折扣、专属客服权益"
         />
         <SubscriptionBox
-        
           title="3个月"
-          price="￥36/月"
-          sum="共￥108"
+          price="相对优惠价/月"
           benefits="免费体验学术专区服务8次、享有30次免费论文下载、购买服务折扣、专属客服权益"
         />
         <SubscriptionBox
           title="12个月"
-          price="￥17/月"
-          sum="共￥208"
+          price="最优惠价/月"
           benefits="免费体验学术专区服务20次、享有100次免费论文下载、购买服务折扣、专属客服权益"
         />
       </div>
@@ -67,18 +62,13 @@ import SubscriptionBox from './SubscriptionBox.vue';
 export default {
   components: {
     Sidebar,
-    SubscriptionBox,
-  },
-  data() {
-    return {
-      logoUrl: require('@/assets/companylogo.png'), // 引入图片路径
-    };
+    SubscriptionBox
   },
   methods: {
     goBack() {
       this.$router.back();
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -109,8 +99,8 @@ export default {
   flex-grow: 1;
   padding: 20px 40px;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px; /* 增加圆角 */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 更深的阴影 */
   margin: 20px;
   display: flex;
   flex-direction: column;
@@ -119,14 +109,14 @@ export default {
 /* 头部样式 */
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* 确保 LOGO 在中间 */
   align-items: center;
   background-color: #f4b084;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 12px; /* 更圆的角 */
   margin-bottom: 20px;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: relative; /* 确保子元素可以绝对定位 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 加深阴影 */
 }
 
 /* 用户信息样式 */
@@ -156,19 +146,13 @@ export default {
 }
 
 /* 居中公司 LOGO 样式 */
-.logo-img {
-  width: 150px; /* 设置图片宽度，例如150px */
-  height: auto; /* 让高度根据宽度自动调整，保持图片比例 */
-  display: block;
-  margin: 0 auto; /* 图片居中 */
-}
-
-
-.logo-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
+.logo {
+  background-color: #d7aefb;
+  padding: 16px 50px; /* 调整 padding */
+  font-weight: bold;
+  font-size: 24px; /* 调整字体大小 */
+  border-radius: 12px; /* 更圆的角 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影 */
 }
 
 /* 权益通知 */
@@ -178,8 +162,8 @@ export default {
   text-align: center;
   font-size: 16px;
   margin-bottom: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 12px; /* 更圆的角 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
 }
 
 /* 订阅选项样式 */
