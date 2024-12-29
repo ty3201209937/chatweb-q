@@ -1,27 +1,28 @@
 <template>
-  <div class="modal-overlay" v-show="visible">
-    <div class="password-dialog">
-      <div class="dialog-header">
+  <div class="forgot-password-page">
+    <div class="password-form">
+      <div class="form-header">
         <h3>修改/找回密码</h3>
-        <button class="close-button" @click="cancelChange">&times;</button>
       </div>
-      <div class="dialog-content">
-        <div class="form-group" style="display: flex; align-items: center;">
-          <input
-            id="phone-number"
-            v-model="phoneNumber"
-            placeholder="请输入手机号"
-            @input="validatePhoneNumber"
-            :class="{'input-invalid':!phoneNumberIsValid && phoneNumber.length > 0}"
-          />
-          <button
-            type="button"
-            class="send-verification-code"
-            @click="sendVerificationCode"
-            :disabled="!phoneNumberIsValid"
-          >
-            获取验证码
-          </button>
+      <div class="form-content">
+        <div class="form-group">
+          <div class="input-group">
+            <input
+              id="phone-number"
+              v-model="phoneNumber"
+              placeholder="请输入手机号"
+              @input="validatePhoneNumber"
+              :class="{'input-invalid': !phoneNumberIsValid && phoneNumber.length > 0}"
+            />
+            <button
+              type="button"
+              class="send-verification-code"
+              @click="sendVerificationCode"
+              :disabled="!phoneNumberIsValid"
+            >
+              获取验证码
+            </button>
+          </div>
         </div>
         <div class="form-group">
           <input
@@ -29,14 +30,14 @@
             v-model="verificationCode"
             placeholder="请输入验证码"
             @input="validateVerificationCode"
-            :class="{'input-invalid':!verificationCodeIsValid && verificationCode.length > 0}"
+            :class="{'input-invalid': !verificationCodeIsValid && verificationCode.length > 0}"
           />
         </div>
         <div class="form-group">
           <div class="password-input-container">
             <input
               id="new-password"
-              :type="showPassword? 'text' : 'password'"
+              :type="showPassword ? 'text' : 'password'"
               v-model="newPassword"
               placeholder="请输入新密码"
               @input="validatePassword"
@@ -57,7 +58,7 @@
           <div class="password-input-container">
             <input
               id="confirm-password"
-              :type="showConfirmPassword? 'text' : 'password'"
+              :type="showConfirmPassword ? 'text' : 'password'"
               v-model="confirmPassword"
               placeholder="请再次输入新密码"
               @input="validatePassword"
@@ -100,7 +101,6 @@ export default {
       newPassword: '',
       confirmPassword: '',
       errorMessage: '',
-      visible: true,
       showPassword: false,
       showConfirmPassword: false,
       verificationCodeSent: false,
@@ -124,7 +124,7 @@ export default {
     },
     validatePassword() {
       if (this.newPassword && this.confirmPassword) {
-        this.errorMessage = this.newPassword === this.confirmPassword? '' : '两次输入的密码不匹配';
+        this.errorMessage = this.newPassword === this.confirmPassword ? '' : '两次输入的密码不匹配';
       } else {
         this.errorMessage = ''; // 清除错误信息
       }
@@ -143,11 +143,11 @@ export default {
         return;
       }
       console.log('密码更改为:', this.newPassword);
-      this.cancelChange(); // 关闭对话框
+      this.cancelChange(); // 关闭页面
     },
     cancelChange() {
-      this.visible = false; // 关闭对话框
       this.resetForm(); // 重置表单状态
+      this.$router.push({ name: 'login' }); // 返回登录页面
     },
     resetForm() {
       this.phoneNumber = '';
@@ -162,85 +162,121 @@ export default {
       this.phoneNumberIsValid = false;
     },
     togglePasswordVisibility() {
-      this.showPassword =!this.showPassword;
+      this.showPassword = !this.showPassword;
     },
     toggleConfirmPasswordVisibility() {
-      this.showConfirmPassword =!this.showConfirmPassword;
+      this.showConfirmPassword = !this.showConfirmPassword;
     }
   }
 };
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+.forgot-password-page {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
-.password-dialog {
+.password-form {
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 450px;
-  padding: 30px;
+  max-width: 400px;
+  padding: 40px;
   position: relative;
 }
 
-.dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.form-header {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.dialog-header h3 {
+.form-header h3 {
   margin: 0;
-  font-size: 1.5em;
-  color: #333;
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 1.5em;
-  cursor: pointer;
-  color: #ccc;
-}
-
-.close-button:hover {
-  color: #000;
+  font-size: 1.8em;
+  color: #343a40;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.input-group {
   display: flex;
   align-items: center;
 }
 
+.input-group input {
+  flex: 1;
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 5px 0 0 5px;
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.input-group button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.input-group button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
 .form-group input {
-  flex-grow: 1;
-  width: auto;
-  padding: 12px;
-  border: 1px solid #ccc;
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ced4da;
   border-radius: 5px;
   font-size: 1em;
   box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 .form-group button {
-  margin-left: 10px;
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-group button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
 }
 
 .input-invalid {
-  border-color: red;
+  border-color: #dc3545;
 }
 
 .password-input-container {
@@ -253,54 +289,54 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #aaa;
+  color: #6c757d;
 }
 
 .error-message {
-  color: red;
+  color: #dc3545;
   font-size: 0.9em;
   margin-top: 10px;
+  text-align: center;
 }
 
 .button-group {
   display: flex;
-  justify-content: flex-end; /* 确保按钮组在内容的末尾 */
-  gap: 10px; /* 按钮之间的间距 */
+  justify-content: flex-end; /* 将按钮对齐到右侧 */
+  gap: 20px; /* 添加间距 */
 }
 
 .confirm-button,
 .cancel-button {
-  padding: 10px 20px; /* 按钮内边距 */
-  border: none; /* 无边框 */
-  border-radius: 5px; /* 圆角边框 */
-  cursor: pointer; /* 鼠标悬停时显示指针 */
-  font-size: 1em; /* 字体大小 */
-  transition: background-color 0.3s, opacity 0.3s; /* 平滑背景色和透明度变化 */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s, opacity 0.3s;
 }
 
 .confirm-button {
-  background-color: #007bff; /* 蓝色背景 */
-  color: white; /* 白色文字 */
+  background-color: #007bff;
+  color: white;
 }
 
 .confirm-button:hover {
-  background-color: #0056b3; /* 悬停时的深色背景 */
+  background-color: #0056b3;
 }
 
 .cancel-button {
-  background-color: #6c757d; /* 灰色背景 */
-  color: white; /* 白色文字 */
+  background-color: #6c757d;
+  color: white;
 }
 
 .cancel-button:hover {
-  background-color: #5a6268; /* 悬停时的深色背景 */
+  background-color: #5a6268;
 }
 
-/* 禁用状态下的按钮样式 */
 .confirm-button:disabled,
 .cancel-button:disabled {
-  background-color: #e0e0e0; /* 禁用时的浅灰色背景 */
-  cursor: not-allowed; /* 禁用时的鼠标样式 */
-  opacity: 0.5; /* 禁用时的透明度 */
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 </style>

@@ -150,6 +150,7 @@ export default {
   justify-content: flex-end;
   padding: 20px 20px 0 0;
   align-items: center;
+  position: relative;
 }
 
 .avatar {
@@ -240,7 +241,8 @@ export default {
   position:absolute ;
   top: 400px;
   left: 20px;
-
+  width: 150px;
+  height: 50px;
 }
 
 </style>

@@ -24,11 +24,6 @@ const routes = [
         component: () => import('@/components/RegisterPage.vue')
     },
     {
-        path: '/order',
-        name: 'ordermanagement',
-        component: () => import('@/components/OrderManagement.vue')
-    },
-    {
         path: '/sign',
         name: 'sign',
         component: () => import('@/components/sign.vue')
@@ -38,11 +33,12 @@ const routes = [
         name: 'Person',
         component: () => import('@/components/PersonalHomepage.vue')
     },
-    {
-        path: '/mainpage8.1.1',
-        name: 'mainpage',
-        component: () => import('@/components/mainpage8.1.1.vue')
-    },
+    // {
+    //     path: '/mainpage8.1.1',
+    //     name: 'mainpage',
+    //
+    //       component: () => import('@/components/mainpage8.1.1.vue')
+    // },
     {
         path: '/no-page',
         name: 'NoPage',
@@ -67,9 +63,48 @@ const routes = [
         path:'/online',
         name:'online',
         component: () => import('@/components/online.vue')
-    }
-  
-   
+    },
+    {
+        path:'/polish',
+        name:'polish',
+        component: () => import('@/components/polish.vue')
+    },
+    {
+        path: '/DocumentationPage',
+        name: 'DocumentationPage',
+        component: () => import('@/components/DocumentationPage.vue')
+    },
+    {
+        path: '/translation',
+        name: 'translation',
+        component: () => import('@/components/translation.vue')
+    },
+    {
+        path: '/zhishiku',
+        name: 'zhishiku',
+        component: () => import('@/components/zhishiku.vue')
+    },
+    {
+        path: '/FeatureItem',
+        name: 'FeatureItem',
+        component: () => import('@/components/FeatureItem.vue')
+    },
+    {
+        path: '/ForgotPassword',
+        name: 'ForgotPassword',
+        component: () => import('@/components/ForgotPassword (1).vue')
+    },
+    {
+        path: '/OrderQueryComponent',
+        name: 'OrderQueryComponent',
+        component: () => import('@/components/OrderQueryComponent (1).vue')
+    },
+    {
+        path: '/PdfToWord',
+        name: 'PdfToWord',
+        component: () => import('@/components/PdfToWord.vue')
+    },
+
 ];
 
 const router = new VueRouter({

@@ -12,7 +12,7 @@
         <img src="@/assets/zaixian.jpg" alt="在线客服" @click="gotoOnline" class="nav-icon">
       </ul>
     </div>
-    <!-- 使用 Flexbox 布局来控制按钮间距 -->
+    
     <div class="button-container">
       <ContinueApplicationButton
         buttonText="论文生成入口"
@@ -26,28 +26,40 @@
         :onClick="gotomainpage"
         class="button-margin"
       />
-      <div class="upload-btn-wrapper">
-        <label for="file-upload" class="upload-button"></label>
-        <input
-          id="file-upload"
-          type="file"
-          style="display: none"
-          @change="handleFileUpload"
-        />
-      </div>
     </div>
+    
     <div class="home_page_botton3">**分钟前论文生成成功</div>
+    
     <div class="logo">
       <img src="@/assets/logo1.png" width="500px" height="200px">
+      <input v-model="inputValue" class="input-field" type="text" placeholder="输入您想要解决的问题" @keydown="onKeyPress">
+      
+      <!-- 新增的按钮容器 -->
+      <div class="buttons-container">
+        <div class="upload-btn-wrapper">
+          <label for="file-upload" class="upload-button">
+            <span class="tooltip">支持上传文件(最多50个，每个100 MB)接受 pdf、doc、xlsx、ppt、txt、图片等</span>
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            style="display: none"
+            @change="handleFileUpload"
+            multiple="multiple"
+          />
+        </div>
+        
+        <!-- 发送按钮 -->
+        <button
+          class="kimi-send-button"
+          @click="handleSend"
+          :disabled="!inputValue.trim()"
+        ></button>
+      </div>
     </div>
-    <input v-model="inputValue" class="input-field" type="text" placeholder="输入您想要解决的问题" @keydown="onKeyPress">
-    <button
-      class="kimi-send-button"
-      @click="handleSend"
-      :disabled="!inputValue.trim()"
-    ></button>
   </div>
 </template>
+
 
 <script>
 import ContinueApplicationButton from '@/components/Button/ContinueApplicationButton.vue';
@@ -85,10 +97,10 @@ export default {
       this.$router.push({ name: 'PaperGenerator' }); // 确保路由名称正确
     },
     goToSearch() {
-      this.$router.push({ name: 'NoPage(1)' }); // 跳转到 /no-page 页面
+      this.$router.push({ name: 'NoPage', query: { content: this.inputValue } }); // 跳转到 NoPage 页面，并传递查询参数
     },
     gotono_page() {
-      this.$router.push({ name: 'NoPage' }); // 跳转到 /no-page 页面
+      this.$router.push({ name: 'NoPage' }); // 跳转到 NoPage 页面
     },
     gotosign() {
       this.$router.push({ name: 'sign' });
@@ -99,7 +111,7 @@ export default {
     },
     handleSend() {
       if (this.inputValue.trim() !== "") {
-        // 跳转到 /no-page 页面，并传递输入内容
+        // 跳转到 NoPage 页面，并传递输入内容
         this.$router.push({
           name: "NoPage",
           query: { content: this.inputValue },
@@ -141,6 +153,8 @@ body {
   height: 100vh; /* 使容器充满整个视口 */
   position: relative; /* 添加相对定位 */
   overflow: visible; /* 确保子元素不会被裁剪 */
+  flex-direction: column; /* 新增：使子元素垂直排列 */
+  gap: 20px; /* 新增：控制子元素之间的间距 */
 }
 
 .home_page_botton3 {
@@ -155,13 +169,27 @@ body {
 
 .navigation {
   width: 65px;
-  height: 491px;
+  height: 572px;
   background-color: hwb(184 70% 8%);
   position: absolute;
   left: 30px;
   top: 268px;
   border-radius: 10px;
+  display: flex; /* 新增 */
+  flex-direction: column; /* 新增 */
+  align-items: center; /* 新增 */
+  justify-content: center; /* 新增：使内容在导航栏内垂直居中 */
 }
+.navigation ul {
+  list-style: none;
+  display: flex; /* 新增 */
+  flex-direction: column; /* 新增 */
+  align-items: center; /* 新增 */
+  gap: 7px; /* 新增：控制按钮之间的间距 */
+  margin-left: -41px;
+  margin-top: 32px;
+}
+
 
 .logo {
   width: 500px;
@@ -173,16 +201,6 @@ body {
   margin: 10px auto;
   text-align: center;
   line-height: 100px;
-}
-
-.navigation ul li {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  margin: 40px 10px 20px -30px;
-  background-color: #ffbb3d;
-  border-radius: 10px;
-  margin-top: -3px;
 }
 
 .logo img {
@@ -197,7 +215,8 @@ body {
   height: 40px;
   margin: 40px 10px 20px -30px;
   border-radius: 10px;
-  margin-top: -3px;
+  margin-top: 4px;
+  margin-left: 11px;
 }
 
 .button-container {
@@ -212,27 +231,34 @@ body {
   flex: 1; /* 使按钮宽度一致 */
 }
 
+
 .input-field {
-  width: 750px;
+  width: 150%;  
+  max-width: 750px;
   height: 120px;
+  top: 360px;
+  left: -136px;
+  margin-left: -800px;
   border-radius: 30px;
   border: 2px solid #ccc;
   padding: 10px;
   position: absolute;
-  top: 433px;
-  left: 550px;
-  border-radius: 10px;
   font-size: 16px;
   background-color: #f8f8f8;
   color: #333;
 }
 
+.buttons-container {
+  position: absolute;
+  right: 10px; /* 使按钮在右侧 */
+  bottom: 10px; /* 使按钮对齐底部 */
+  display: flex;
+  gap: 10px; /* 控制按钮之间的间距 */
+  top: 437px;
+  left: -263px;
+}
+
 .kimi-send-button {
-  position: absolute; /* 确保使用绝对定位 */
-  background-color: grey;
-  left: 1270px; /* 使用 left 代替 right */
-  top: 526px; /* 使用 top 代替 bottom */
-  display: inline-block;
   width: 40px;
   height: 40px;
   background-image: url("@/assets/按钮.jpg");
@@ -242,7 +268,7 @@ body {
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
-  z-index: 2;
+  margin-top: 17px;
 }
 
 .kimi-send-button:hover {
@@ -251,29 +277,61 @@ body {
 
 .upload-btn-wrapper {
   display: inline-block;
-  position: relative;
 }
 
 .upload-button {
-  position: absolute;
-  background-color: rgb(252, 252, 252);
-  bottom: 212px;
-  right: -100px;
-  top: -184px;
   display: inline-block;
   width: 40px;
   height: 40px;
   background-image: url("@/assets/xuanzewenjian.png");
   background-position: center;
   background-size: cover;
-  border-radius: 50%; /* 使按钮呈圆形 */
+  border-radius: 50%;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
-  z-index: 2;
 }
 
 .upload-button:hover {
-  background: #0056b3;
+  background-color: lightblue;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 400px; /* 设置宽度 */
+  height: 50px; /* 设置高度 */
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the button */
+  left: 50%;
+  margin-left: -240px; /* 调整水平位置以居中 */
+  opacity: 0;
+  transition: opacity 0.3s;
+  border: 1px solid #ddd; /* 边框 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 阴影 */
+  padding: 10px; /* 内边距 */
+  font-size: 14px; /* 字体大小 */
+  line-height: 1.5; /* 行高 */
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent; /* 尾巴颜色 */
+}
+
+.upload-button:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
 }
 </style>

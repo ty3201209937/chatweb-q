@@ -106,16 +106,36 @@ export default {
   padding: 12px;
   border-radius: 4px;
   font-size: 16px;
+  display: flex;
+  align-items: center;
 }
 
 .message.user {
   background-color: #d1f7c4;
-  text-align: right;
+  justify-content: flex-end; /* 头像在右边 */
+}
+
+.message.user img {
+  order: 2; /* 头像放在最后 */
+  margin-left: 10px; /* 调整与文本的间距 */
+}
+
+.message.user span {
+  order: 1; /* 文本放在前面 */
 }
 
 .message.support {
   background-color: #f1f1f1;
   text-align: left;
+  justify-content: flex-start;
+}
+
+.avatar {
+  width: 40px; /* 设置头像宽度 */
+  height: 40px; /* 设置头像高度 */
+  border-radius: 50%; /* 圆形头像 */
+  object-fit: cover; /* 确保图片不失真 */
+  margin-right: 10px; /* 调整与文本的间距 */
 }
 
 .chat-input {
